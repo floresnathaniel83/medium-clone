@@ -3,8 +3,28 @@
 	box-sizing: border-box;
 }
 
-h1 {
-	font-size: 300px;
+#headerContainer {
 	text-align: center;
-	color: fuchsia;
+
+		#header {
+			font-size: 100px;
+			text-align: center;
+			color: #f47d30;
+
+
+	}
+}
+
+#navBar {
+	margin-top: 10%;
+		a {
+
+			background: #57bb89 ;
+			color: white;
+			padding: 1.5%;
+			margin: 2%;
+			text-decoration: none;
+
+		}
+
 }

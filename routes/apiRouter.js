@@ -3,89 +3,80 @@ const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
 let User = require('../db/schema.js').User
-let Post = require('../db/schema.js').Post
+let Blog = require('../db/schema.js').Blog
 
 
-apiRouter
-  //fetch many
-  .get('/posts', function(req, res){
-    Post.find(req.query, function(err, results){
-      if(err) return res.json(err) 
-      res.json(results)
-    })
-  })
-  //create one
-  .post('/posts', function(req, res){
-    let newPost = new Post(req.body)
-    newPost.save(function(err){
-      if(err) return res.json(err) 
- 
-      res.json(newPost)
-    })
-  })
 
-apiRouter
-  //fetch one
-  .get('/posts/:_id', function(req, res){
-    Post.findById(req.params._id, function(err, record){
-      if(err || !record) return res.json(err)  
-      res.json(record)
+  //read many
+  apiRouter.get('/blogs', function(request, response){
+    console.log('getting messages')
+    Blog.find({}, function(err, records){
+     response.send(records)
     })
   })
-  //edit one
-  .put('/posts/:_id', function(req, res) {
-    Post.findById(req.params._id, function(err,record) {
-      let recordWithUpdates = helpers.updateFields(record,req.body)
-      recordWithUpdates.save(function(err){
-        if(err || !record) return res.json(err) 
-        res.json(record)
-      })
-    })
-  })
-  //delete one
-  .delete('/posts/:_id', (req, res) => {
-    Post.remove({ _id: req.params._id}, (err) => {
-      if(err) return res.json(err)
-      res.json({
-        msg: `record ${req.params._id} successfully deleted`,
-        _id: req.params._id
-      })
-    })  
-  })
-
-  apiRouter
-    .get('/users', function(req, res){
-      User.find(req.query , "-password", function(err, results){
-        if(err) return res.json(err) 
-        res.json(results)
-      })
-    })
-
-  apiRouter
-    .get('/users/:_id', function(req, res){
-      User.findById(req.params._id, "-password", function(err, record){
-        if(err || !record ) return res.json(err) 
-        res.json(record)
-      })
-    })
-    .put('/users/:_id', function(req, res){
-      User.findById(req.params._id, "-password",function(err, record){
-        if(err || !record) return res.json(err)
-        let recordWithUpdates = helpers.updateFields(record, req.body)
-        recordWithUpdates.save(function(err){
-          if(err) return res.json(err) 
-          res.json(recordWithUpdates)
+  //read many
+  apiRouter.get('/myBlogs', function(request, response){
+    if (request.user) { // if there is currently a logged-in user
+    Blog.find({to:request.user.email}, function(err,records) {
+      if (err) {
+        response.json({
+          error: err
         })
+      }
+      else {
+        response.json(records)
+      }
+    })
+  }
+  else {
+    response.status(404).json({
+      error: 'no one is logged in'
+    })
+  }
+})
+
+// write one
+apiRouter.post('/blogs',function(request,response) {
+  let newRecord = new Blog(request.body)
+  newRecord.save(function(err) {
+    if (err) {
+      response.status(404).send(err)
+    }
+    else {
+      response.json(newRecord)
+    }
+  })
+})
+
+apiRouter.delete('/blogs/:_id',function(request,response){
+  //request.params contains the variables that were in the route pattern, expressed in the form 
+  // [route placeholder]: [value sent]
+  let theId = request.params._id
+   console.log(request.body)
+  Blog.remove({_id:theId},function(err) {
+    if (err) {
+      response.json({
+        error: err
       })
-    })
-    .delete('/users/:_id', function(req, res){
-      User.remove({ _id: req.params._id}, (err) => {
-        if(err) return res.json(err)
-        res.json({
-          msg: `record ${req.params._id} successfully deleted`,
-          _id: req.params._id
-        })
-      })  
-    })
+    }
+    else {
+      response.status(200).json({
+        msg: 'record successfully deleted!'
+      })
+    }
+  })
+})
+
+//read all users
+apiRouter.get('/users',function(request,response){ //>>> where is the users route coming from?
+  User.find({},function(err,records) {
+    if (err) {
+      response.send(err)
+    }
+    else {
+      response.json(records)
+    }
+  })
+})
 
 module.exports = apiRouter

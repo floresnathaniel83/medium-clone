@@ -1,1 +1,1 @@
-*{font-family:Helvetica, Arial, sans-serif;box-sizing:border-box}h1{font-size:300px;text-align:center;color:fuchsia}
+*{font-family:Helvetica, Arial, sans-serif;box-sizing:border-box}#headerContainer{text-align:center}#headerContainer #header{font-size:100px;text-align:center;color:#f47d30}#navBar{margin-top:10%}#navBar a{background:#57bb89;color:white;padding:1.5%;margin:2%;text-decoration:none}
