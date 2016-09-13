@@ -5,7 +5,8 @@ const Header = React.createClass({
 	render: function() {
 		return (
 			<div id="headerContainer">
-				<h3 id="header">The BlogoSphere</h3>
+				<h3 id="header">Blogosphere</h3>
+				<h1>B</h1>
 				<NavBar />
 			</div>
 			)
@@ -18,9 +19,9 @@ const NavBar = React.createClass({
 			<div id="navBar">
 				<a href="#login">Login</a>
 				<a href="#home">Home</a>
-				<a href="#blogs/read">Published</a>
+				<a href="#blogs/myBlogs">Published</a>
 				<a href="#blogs/write">Publish</a>
-				<a href="#" onClick={ACTIONS.logUserOut}>log out</a>
+				<a href="#" onClick={ACTIONS.logUserOut}>Log out</a>
 			</div>
 			)
 	}

@@ -1,3 +1,6 @@
+global.PROJECT_NAME = "theBlogoSphere"
+
+
 const bodyParser = require('body-parser');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -37,7 +40,7 @@ app.set('view engine', 'html');
 // =========
 // DATABASE
 // =========
-connectToDB(process.env.npm_config_name)
+connectToDB(global.PROJECT_NAME )
 
 // =========
 // APPLICATION MIDDLEWARE 
@@ -50,7 +53,7 @@ app.use( session({secret: appSecrets.sessionSecret }) );
 app.use( passport.initialize() );
 app.use( passport.session() );
 appAuthentication(User)
-app.use( appMiddleWare.putCookieOnRes )
+app.use( appMiddleWare.cookifyUser )
 
 // 
 // =========

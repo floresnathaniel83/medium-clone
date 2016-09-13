@@ -2,6 +2,18 @@ import Backbone from 'backbone'
 import $ from 'jquery'
 import {app_name} from '../app'
 
+export const BlogModel = Backbone.Model.extend({
+	url: "/api/blogs",
+	idAttribute: "_id"
+})
+
+export const BlogCollection = Backbone.Collection.extend({
+	model: BlogModel,
+	url: "/api/myBlogs"
+})
+
+
+
 // ..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x
 const User = Backbone.Model.extend({
 	urlRoot: '/api/users',

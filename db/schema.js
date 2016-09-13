@@ -5,27 +5,16 @@ const Schema = mongoose.Schema;
 // ----------------------
 // POSTS
 // ----------------------
-/*
-const postsSchema = new Schema({
-  createdAt: { type: Date, default: Date.now },
-  title:     { type: String, required: true },
-  subtitle:  { type: String },
-  body:      { type: String, required: [true, "No body-content, pls add"] },
-  user:      {
-                 email: { type: String, required: [true, "No user email supplied"] },
-                 _id:   { type: Number, required: true }
-             }
-  
-})
 
 const blogSchema = new Schema({
-  content: { type: String },
-  thread_id: {type: String},
-  reply_to: {type: String},
-  to: {type: String, required: true},
-  from: {type: String, required: true}
+  title:     { type: String, required: true },
+  body:      { type: String, required: [true, "No body-content, pls add"] },
+  user:      {
+                email: { type: String, required: [true, "No user email supplied"] },
+                _id:   { type: String, required: true }
+             }
 })
-*/
+
 // ----------------------
 // USERS
 // ----------------------
@@ -33,14 +22,9 @@ const blogSchema = new Schema({
 const usersSchema = new Schema({
   // required for authentication: DO NOT TOUCH Or You May Get Punched
   email:     { type: String, required: true },
-  password:  { type: String, required: true },
+  password:  { type: String, required: true }
   // x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x..x
-  
-   // example of optional fields
-  name:      { type: String },
-  createdAt: { type: Date, default: Date.now }
-
-})
+  })
 
 
 module.exports = {

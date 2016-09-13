@@ -11,9 +11,12 @@ const init = function() {
 		})
 		return targetVal
 	}
+	console.log(app_name)
 	var app_name = findCookie('tiy_full_stack_app_name')
 	var user = findCookie(app_name + '_user')
 	localStorage.setItem(app_name + '_user',user)
+		console.log(app_name)
+
 	return app_name
 }
 

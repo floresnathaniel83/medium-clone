@@ -25,7 +25,7 @@ const RegisterBox = React.createClass({
 		return (
 			<div className="loginBox register">
 				<form onSubmit={this._handleRegister} >
-					<h3>Register</h3>
+					<h4>Register</h4>
 					<input type="email" name="email" placeholder="enter your email" />
 					<input type="password" name="password" placeholder="enter a password" />
 					<button type="submit">sign up!</button>
@@ -45,7 +45,7 @@ const LoginBox = React.createClass({
 		return (
 			<div className="loginBox login">
 				<form onSubmit={this._handleLogin} >
-					<h3>Log in</h3>
+					<h4>Log in</h4>
 					<input type="email" name="email" placeholder="enter your email" />
 					<input type="password" name="password" placeholder="enter a password" />
 					<button type="submit">log in!</button>

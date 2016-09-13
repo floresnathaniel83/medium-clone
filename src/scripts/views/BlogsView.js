@@ -1,34 +1,69 @@
 import React from 'react'
 import $ from 'jquery'
+import {BlogModel} from '../models/models'
+import {User} from '../models/models'
+import BLOG_STORE from '../store'
+import ACTIONS from '../actions'
 import Header from './header'
+import Backbone from 'backbone'
 
-var BlogsView = React.createClass({
+const BlogsView = React.createClass({
 
 	getInitialState: function() {
-		return {
-			coll: this.props.coll
-		}
+		return BLOG_STORE._getData()
+	},
+
+	componentWillReceiveProps: function(newProps) {
+		let queryForBlogs
+	 	if(newProps.routedFrom === 'blogs/myBlogs') {
+	 		 queryForBlogs = {'user._id' : User.getCurrentUser()._id}
+
+	 	} else {
+	 		 queryForBlogs = {}
+
+	 	}
+	 
+	 	ACTIONS.fetchBlogs(queryForBlogs)
+
+	 	BLOG_STORE.on('updateContent', () => {
+	 			this.setState(BLOG_STORE._getData())
+			})
 	},
 
 	componentWillMount: function() {
-		this.state.coll.on('sync update',()=>{
-			this.setState({
-				coll: this.state.coll
+		let queryForBlogs
+	 	if(this.props.routedFrom === 'blogs/myBlogs') {
+	 		 queryForBlogs = {'user._id' : User.getCurrentUser()._id}
+
+	 	} else {
+	 		 queryForBlogs = {}
+
+	 	}
+	 
+	 	ACTIONS.fetchBlogs(queryForBlogs)
+
+	 	BLOG_STORE.on('updateContent', () => {
+	 			this.setState(BLOG_STORE._getData())
 			})
-		})
+	},
+
+	componentWillUnmount: function () {
+		
+		BLOG_STORE.off('updateContent')
+
 	},
 
 	render: function() {
 		return (
 			<div className="blogsView">
 				<Header />
-				<Published coll={this.props.coll} />
+				<Published coll={this.state.collection} />
 			</div>
 			)
 	}
 })
 
-var Published = React.createClass({
+const Published = React.createClass({
 	_makeBlog: function(record) {
 		return <Blog key={record.id} record={record} />
 	},
@@ -42,11 +77,11 @@ var Published = React.createClass({
 	}
 })
 
-var Blog = React.createClass({
+const Blog = React.createClass({
 
 	_removeModel: function() {
 		this.props.record.destroy({
-			url: `/api/messages/${this.props.record.id}`		
+			url: `/api/blogs/${this.props.record.id}`		
 		})
 	},
 
@@ -54,12 +89,15 @@ var Blog = React.createClass({
 		return (
 			<div className="blog">
 				<div className="blogDetails">
-					<p>to: {this.props.record.get('to')}</p>
-					<p>from: {this.props.record.get('from')}</p>
-					<p>{this.props.record.get('content')}</p>
+					<p>{this.props.record.get('user').email}</p>
+					<p>Title: {this.props.record.get('title')}</p>
+					<p>Content: {this.props.record.get('body')}</p>
+				
 				</div>
 				<button onClick={this._removeModel} >X</button>
 			</div>
 			)
 	}
 })
+
+export default BlogsView
